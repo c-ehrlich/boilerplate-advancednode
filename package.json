@@ -5,7 +5,7 @@
   "name": "fcc-advanced-node-and-express",
   "author": "http://github.com/JosephLivengood",
   "version": "0.0.1",
-  "description": "What am I about?",
+  "description": "Learning Pug, Session auth, etc. for FreeCodeCamp",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
