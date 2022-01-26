@@ -74,7 +74,11 @@ myDB(async (client) => {
   // a socket is an individual client who is connected
   io.on("connection", (socket) => {
     ++currentUsers;
-    io.emit("user count", currentUsers);
+    io.emit("user", {
+      name: socket.request.user.name,
+      currentUsers,
+      connected: true
+    });
     console.log("user " + socket.request.user.name + " connected");
 
     socket.on("disconnect", () => {
