@@ -42,9 +42,15 @@ myDB(async (client) => {
   // takes 1. string containing the title of the emitted event 2. function with which the data is passed through
   // a socket is an individual client who is connected
   io.on("connection", (socket) => {
-    console.log("A user has connected");
     ++currentUsers;
     io.emit('user count', currentUsers);
+    console.log("A user has connected");
+
+    socket.on("disconnect", () => {
+      console.log("A user has disconnected");
+      --currentUsers;
+      io.emit("user count", currentUsers);
+    })
   });
 }).catch((e) => {
   app.route("/").get((req, res) => {
