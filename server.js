@@ -44,13 +44,13 @@ app.use(passport.session());
 const onAuthorizeSuccess = (data, accept) => {
   console.log("successful connection to socket.io");
   accept(null, true);
-}
+};
 
 const onAuthorizeFail = (data, message, error, accept) => {
   if (error) throw new Error(message);
   console.log("Failed connection to socket.io:", message);
   accept(null, false);
-}
+};
 
 io.use(
   passportSocketIo.authorize({
@@ -77,7 +77,7 @@ myDB(async (client) => {
     io.emit("user", {
       name: socket.request.user.name,
       currentUsers,
-      connected: true
+      connected: true,
     });
     console.log("user " + socket.request.user.name + " connected");
 
@@ -85,6 +85,13 @@ myDB(async (client) => {
       console.log("A user has disconnected");
       --currentUsers;
       io.emit("user count", currentUsers);
+    });
+
+    socket.on("chat message", (message) => {
+      io.emit("chat message", {
+        name: socket.request.user.name,
+        message,
+      });
     });
   });
 }).catch((e) => {
