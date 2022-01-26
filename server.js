@@ -41,6 +41,17 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+const onAuthorizeSuccess = (data, accept) => {
+  console.log("successful connection to socket.io");
+  accept(null, true);
+}
+
+const onAuthorizeFail = (data, message, error, accept) => {
+  if (error) throw new Error(message);
+  console.log("Failed connection to socket.io:", message);
+  accept(null, false);
+}
+
 io.use(
   passportSocketIo.authorize({
     cookieParser: cookieParser,
@@ -80,17 +91,6 @@ myDB(async (client) => {
     });
   });
 });
-
-const onAuthorizeSuccess = (data, accept) => {
-  console.log("successful connection to socket.io");
-  accept(null, true);
-}
-
-const onAuthorizeFail = (data, message, error, accept) => {
-  if (error) throw new Error(message);
-  console.log("Failed connection to socket.io:", message);
-  accept(null, false);
-}
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => {
