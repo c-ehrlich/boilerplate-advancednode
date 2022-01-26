@@ -42,7 +42,31 @@ module.exports = (app, myDataBase) => {
       },
       (accessToken, refresToken, profile, cb) => {
         console.log(profile);
-        // database logic here with callback containing our user object
+        myDataBase.findOneAndUpdate(
+          { id: profile.id },
+          {
+            $setOnInsert: {
+              id: profile.id,
+              name: profile.displayName || 'John Doe',
+              photo: profile.photos[0].value || '',
+              email: Array.isArray(profile.emails)
+              ? profile.emails[0].value
+              : 'No public email',
+              create_on: new Date(),
+              provider: profile.provider || ''
+            },
+            $set: {
+              last_login: new Date()
+            },
+            $inc: {
+              login_count: 0
+            }
+          },
+          { upsert: true, new: true },
+          (err, doc) => {
+            return cb(null, doc.value);
+          }
+        )
       }
     )
   );
