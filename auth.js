@@ -40,33 +40,33 @@ module.exports = (app, myDataBase) => {
         callbackURL:
           "https://fcc-advanced-node1.herokuapp.com/auth/github/callback",
       },
-      (accessToken, refresToken, profile, cb) => {
+      (accessToken, refreshToken, profile, cb) => {
         console.log(profile);
         myDataBase.findOneAndUpdate(
           { id: profile.id },
           {
             $setOnInsert: {
               id: profile.id,
-              name: profile.displayName || 'John Doe',
-              photo: profile.photos[0].value || '',
+              name: profile.displayName || "John Doe",
+              photo: profile.photos[0].value || "",
               email: Array.isArray(profile.emails)
-              ? profile.emails[0].value
-              : 'No public email',
+                ? profile.emails[0].value
+                : "No public email",
               create_on: new Date(),
-              provider: profile.provider || ''
+              provider: profile.provider || "",
             },
             $set: {
-              last_login: new Date()
+              last_login: new Date(),
             },
             $inc: {
-              login_count: 0
-            }
+              login_count: 0,
+            },
           },
           { upsert: true, new: true },
           (err, doc) => {
             return cb(null, doc.value);
           }
-        )
+        );
       }
     )
   );
