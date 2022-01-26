@@ -27,6 +27,14 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// middleware that ensures a user is authenticated, otherwise sends them to '/'
+const ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/");
+};
+
 myDB(async (client) => {
   const myDataBase = await client.db("database").collection("users");
 
@@ -73,7 +81,7 @@ myDB(async (client) => {
         }
       );
 
-    app.route("/profile").post((req, res) => {
+    app.route("/profile").get(ensureAuthenticated, (req, res) => {
       res.render("pug/profile");
     });
   });
