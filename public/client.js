@@ -7,11 +7,11 @@ $(document).ready(function () {
     let message =
       data.name +
       (data.connected ? " has joined the chat." : " has left the chat.");
-    $("messages").append($("<li>").html("<b>" + message + "</b>"));
+    $("#messages").append($("<li>").html("<b>" + message + "</b>"));
   });
 
   socket.on("chat message", (data) => {
-    $("messages").append($("<li>").html(data.name + ": " + data.message));
+    $("#messages").append($("<li>").html(data.name + ": " + data.message));
   });
 
   // Form submittion with new message in field with id 'm'
