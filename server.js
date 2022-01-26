@@ -79,6 +79,7 @@ myDB(async (client) => {
       currentUsers,
       connected: true,
     });
+
     console.log("user " + socket.request.user.name + " connected");
 
     socket.on("disconnect", () => {
@@ -88,6 +89,10 @@ myDB(async (client) => {
     });
 
     socket.on("chat message", (message) => {
+      console.log("+++ START CHAT MESSAGE REQUEST USER +++");
+      console.log(socket.request.user);
+      console.log("+++ END CHAT MESSAGE REQUEST USER +++");
+
       io.emit("chat message", {
         name: socket.request.user.name,
         message,
