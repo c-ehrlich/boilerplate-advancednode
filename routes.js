@@ -54,13 +54,13 @@ module.exports = (app, myDataBase) => {
 
   app.route("/profile").get(ensureAuthenticated, (req, res) => {
     res.render("pug/profile", {
-      username: req.user.username,
+      name: req.user.name,
     });
   });
 
   app.route("/register").post(
     (req, res, next) => {
-      myDataBase.findOne({ username: req.body.username }, (err, user) => {
+      myDataBase.findOne({ name: req.body.name }, (err, user) => {
         if (err) {
           next(err);
         } else if (user) {
@@ -68,7 +68,7 @@ module.exports = (app, myDataBase) => {
         } else {
           const hash = bcrypt.hashSync(req.body.password, 12);
           myDataBase.insertOne(
-            { username: req.body.username, password: hash },
+            { name: req.body.name, password: hash },
             (err, doc) => {
               if (err) {
                 res.redirect("/");

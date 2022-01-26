@@ -20,9 +20,9 @@ module.exports = (app, myDataBase) => {
   });
 
   passport.use(
-    new LocalStrategy((username, password, done) => {
-      myDataBase.findOne({ username: username }, (err, user) => {
-        console.log("User " + username + " attempted to log in.");
+    new LocalStrategy((name, password, done) => {
+      myDataBase.findOne({ name: name }, (err, user) => {
+        console.log("User " + name + " attempted to log in.");
         if (err) return done(err);
         if (!user) return done(null, false);
         if (!bcrypt.compareSync(password, user.password))
