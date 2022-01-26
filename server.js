@@ -37,10 +37,14 @@ myDB(async (client) => {
   routes(app, myDataBase);
   auth(app, myDataBase);
 
+  let currentUsers = 0;
+
   // takes 1. string containing the title of the emitted event 2. function with which the data is passed through
   // a socket is an individual client who is connected
   io.on("connection", (socket) => {
     console.log("A user has connected");
+    ++currentUsers;
+    io.emit('user count', currentUsers);
   });
 }).catch((e) => {
   app.route("/").get((req, res) => {
