@@ -18,7 +18,8 @@
     "mongodb": "^3.6.1",
     "node": "^17.3.1",
     "pug": "~3.0.0",
-    "passport": "~0.4.1"
+    "passport": "~0.4.1",
+    "pssport-local": "~1.0.0"
   },
   "repository": {
     "type": "git",

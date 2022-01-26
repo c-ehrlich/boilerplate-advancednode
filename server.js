@@ -7,6 +7,7 @@ const passport = require("passport");
 const fccTesting = require("./freeCodeCamp/fcctesting.js");
 const Db = require("mongodb/lib/db");
 const ObjectID = require("mongodb").ObjectID;
+const LocalStrategy = require('passport-local');
 
 const app = express();
 
@@ -42,6 +43,16 @@ myDB(async (client) => {
       }
     });
   });
+
+  passport.use(new LocalStrategy((username, password, done) => {
+    myDataBase.findOne({ username: username }, (err, user) {
+      console.log('User ' + username + ' attempted to log in.');
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (password !== user.password ) { return done(null, false); }
+      return done(null, user);
+    })
+  }))
 
   app.route("/").get((req, res) => {
     // can also do process.pwd() + "/views/pug/index"
