@@ -30,4 +30,19 @@ module.exports = (app, myDataBase) => {
       });
     })
   );
+
+  passport.use(
+    new GitHubStrategy(
+      {
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL:
+          "https://fcc-advanced-node1.herokuapp.com/auth/github/callback",
+      },
+      (accessToken, refresToken, profile, cb) => {
+        console.log(profile);
+        // database logic here with callback containing our user object
+      }
+    )
+  );
 };
