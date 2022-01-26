@@ -7,7 +7,6 @@ const passport = require("passport");
 const fccTesting = require("./freeCodeCamp/fcctesting.js");
 const Db = require("mongodb/lib/db");
 const passportSocketIo = require("passport.socketio");
-const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 
 const routes = require("./routes.js");
